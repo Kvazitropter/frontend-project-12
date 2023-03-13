@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npm run build --prefix chat",
     "start": "npx start-server -s ./chat/build",
+    "postinstall": "cd chat && npm ci",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "proxy": "http://localhost:5001",
