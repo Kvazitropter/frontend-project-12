@@ -1,0 +1,18 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "An app simulating a slack chat",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "npm run build --prefix chat",
+    "start": "npx start-server -s ./chat/build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "proxy": "http://localhost:5001",
+  "author": "Kvazitropter",
+  "license": "ISC",
+  "dependencies": {
+    "@hexlet/chat-server": "^1.1.6",
+    "react": "^18.2.0"
+  }
+}
