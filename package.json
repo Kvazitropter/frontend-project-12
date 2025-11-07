@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "A chat for exchanging messages builded with react.",
+  "homepage": "https://github.com/Kvazitropter/frontend-project-12#readme",
+  "bugs": {
+    "url": "https://github.com/Kvazitropter/frontend-project-12/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kvazitropter/frontend-project-12.git"
+  },
+  "license": "ISC",
+  "author": "Tatyana Kachulina",
+  "type": "module",
+  "main": "frontend/src/main.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "npx start-server -s ./frontend/dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
