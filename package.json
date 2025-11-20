@@ -13,14 +13,17 @@
   "license": "ISC",
   "author": "Tatyana Kachulina",
   "type": "module",
-  "main": "frontend/src/main.jsx",
+  "main": "frontend/src/index.jsx",
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "npx start-server -s ./frontend/dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4"
+    "@hexlet/chat-server": "^2.0.4",
+    "react-bootstrap": "^2.10.10"
   },
-  "workspaces": ["frontend"]
+  "workspaces": [
+    "frontend"
+  ]
 }
