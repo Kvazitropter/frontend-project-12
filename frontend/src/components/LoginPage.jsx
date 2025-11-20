@@ -24,16 +24,16 @@ const LoginForm = () => {
     },
     onSubmit: async (values) => {
       setIsFailedAuth(false)
-      tryAuth(
-        values.username,
-        values.password,
-      )
+      await tryAuth({
+        username: values.username,
+        password: values.password,
+      })
     },
   })
 
   const tryAuth = async (data) => {
     try {
-      const response = axios.post(routes.loginPath(), data)
+      const response = await axios.post(routes.loginPath(), data)
       window.localStorage.setItem('userId', JSON.stringify(response.data))
       logIn()
       navigate('/')
@@ -60,7 +60,6 @@ const LoginForm = () => {
           name="username"
           autoComplete="username"
           required
-          id="username"
           isInvalid={isFailedAuth}
           value={formik.values.username}
           onChange={formik.handleChange}
@@ -73,7 +72,6 @@ const LoginForm = () => {
           name="password"
           autoComplete="current-password"
           required
-          id="password"
           type="password"
           isInvalid={isFailedAuth}
           value={formik.values.password}
