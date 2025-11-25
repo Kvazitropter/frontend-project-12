@@ -1,5 +1,10 @@
-const apiPath = '/api/v1'
+const apiPath = '/api/v1';
 
 export default {
+  basePath: () => apiPath,
   loginPath: () => [apiPath, '/login'].join(''),
-}
+  channelsPath: () => [apiPath, '/channels'].join(''),
+  channelPath: (id) => [apiPath, '/channels', '/', id].join(''),
+  messagesPath: () => [apiPath, '/messages'].join(''),
+  messagePath: (id) => [apiPath, '/messages', '/', id].join(''),
+};
