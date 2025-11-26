@@ -19,6 +19,18 @@ const LoginForm = () => {
     usernameInput.current.focus();
   }, []);
 
+  const tryAuth = async (data) => {
+    try {
+      const response = await axios.post(routes.loginPath(), data);
+      window.localStorage.setItem('user', JSON.stringify({ ...response.data, username: data.username }));
+      logIn();
+      navigate('/');
+    } catch {
+      setIsFailedAuth(true);
+      usernameInput.current.focus();
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       username: 'admin',
@@ -32,19 +44,6 @@ const LoginForm = () => {
       });
     },
   });
-
-  const tryAuth = async (data) => {
-    try {
-      const response = await axios.post(routes.loginPath(), data);
-      window.localStorage.setItem('user', JSON.stringify({ ...response.data, username: data.username }));
-      logIn();
-      navigate('/');
-    } catch (e) {
-      console.error(e);
-      setIsFailedAuth(true);
-      usernameInput.current.focus();
-    }
-  };
 
   return (
     <Col

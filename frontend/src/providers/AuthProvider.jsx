@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import AuthContext from '../contexts/AuthContext.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!window.localStorage.getItem('user'),
+  );
 
   const logIn = () => setIsLoggedIn(true);
   const logOut = () => {
@@ -10,8 +12,14 @@ const AuthProvider = ({ children }) => {
     window.localStorage.removeItem('user');
   };
 
+  const value = useMemo(() => ({
+    isLoggedIn,
+    logIn,
+    logOut,
+  }), [isLoggedIn]);
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,16 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 import routes from '../routes';
 import { setActiveChannel } from './uiSlice';
 
 export const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
+  const user = JSON.parse(localStorage.getItem('user'));
+  return user?.token ? { Authorization: `Bearer ${user.token}` } : {};
 };
 
 export const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) => async ({
@@ -39,7 +35,6 @@ export const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) => async ({
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: '' }),
-  tagTypes: ['Channel', 'Message'],
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => ({
@@ -47,17 +42,16 @@ export const api = createApi({
         method: 'GET',
         headers: getAuthHeader(),
       }),
-      async onQueryStarted(_, { dispatch, queryFulfilled, getState }) {
-        try {
-          const { data: channels } = await queryFulfilled;
-          const state = getState();
-          if (state.ui.activeChannelId === null) {
-            const activeChannel = channels.find(({ name }) => name === 'general') ?? channels[0];
-            dispatch(setActiveChannel(activeChannel?.id || null));
-          }
-        } catch {}
+      async onCacheEntryAdded(
+        _,
+        {
+          cacheDataLoaded, dispatch,
+        },
+      ) {
+        const { data: channels } = await cacheDataLoaded;
+        const generalChannel = channels.find(({ name }) => name === 'general') ?? channels[0];
+        dispatch(setActiveChannel(generalChannel.id));
       },
-      providesTags: ['Channel'],
     }),
     addChannel: builder.mutation({
       query: (channel) => ({
@@ -66,7 +60,6 @@ export const api = createApi({
         data: channel,
         headers: getAuthHeader(),
       }),
-      invalidatesTags: ['Channel'],
     }),
     removeChannel: builder.mutation({
       query: (id) => ({
@@ -74,7 +67,6 @@ export const api = createApi({
         method: 'DELETE',
         headers: getAuthHeader(),
       }),
-      invalidatesTags: ['Channel', 'Message'],
     }),
     getMessages: builder.query({
       query: () => ({
@@ -82,7 +74,28 @@ export const api = createApi({
         method: 'GET',
         headers: getAuthHeader(),
       }),
-      providesTags: ['Message'],
+      async onCacheEntryAdded(
+        _,
+        {
+          updateCachedData, cacheDataLoaded, cacheEntryRemoved,
+        },
+      ) {
+        const socket = io({
+          auth: {
+            token: JSON.parse(localStorage.getItem('user'))?.token,
+          },
+        });
+
+        await cacheDataLoaded;
+        socket.on('newMessage', (message) => {
+          updateCachedData((draft) => {
+            draft.push(message);
+          });
+        });
+
+        await cacheEntryRemoved;
+        socket.disconnect();
+      },
     }),
     addMessage: builder.mutation({
       query: (message) => ({
@@ -91,15 +104,6 @@ export const api = createApi({
         data: message,
         headers: getAuthHeader(),
       }),
-      invalidatesTags: ['Message'],
-    }),
-    removeMessage: builder.mutation({
-      query: (id) => ({
-        url: routes.messagePath(id),
-        method: 'DELETE',
-        headers: getAuthHeader(),
-      }),
-      invalidatesTags: ['Message'],
     }),
   }),
 });
@@ -110,5 +114,4 @@ export const {
   useRemoveChannelMutation,
   useGetMessagesQuery,
   useAddMessageMutation,
-  useRemoveMessageMutation,
 } = api;
