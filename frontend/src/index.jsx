@@ -1,13 +1,9 @@
-import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
-import App from './components/App.jsx';
-import store from './services/index.js';
-import AuthProvider from './providers/AuthProvider.jsx';
+import ReactDOM from 'react-dom/client';
+import init from './init.jsx';
 
-createRoot(document.getElementById('chat')).render(
-  <Provider store={store}>
-    <AuthProvider>
-      <App />
-    </AuthProvider>
-  </Provider>,
-);
+const app = async () => {
+  const root = ReactDOM.createRoot(document.querySelector('#chat'));
+  root.render(await init());
+};
+
+app();

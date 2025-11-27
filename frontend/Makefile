@@ -4,6 +4,9 @@ install:
 start:
 	npm start
 
+dev:
+	npm run dev
+
 build:
 	npm run build
 

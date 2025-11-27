@@ -13,7 +13,7 @@
   "license": "ISC",
   "author": "Tatyana Kachulina",
   "type": "module",
-  "main": "frontend/src/index.jsx",
+  "main": "index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "start-server -s ./frontend/dist",

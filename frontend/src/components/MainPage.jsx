@@ -1,14 +1,14 @@
 import { Container, Row } from 'react-bootstrap';
-import ChannelsNav from './ChannelsNav.jsx';
-import MessageBox from './MessageBox.jsx';
+import Channels from './Channels.jsx';
+import Messages from './Messages.jsx';
 
-const Chat = () => (
+const MainPage = () => (
   <Container className="h-100 my-4 overflow-hidden rounded shadow">
     <Row className="h-100 flex-md-row bg-white">
-      <ChannelsNav />
-      <MessageBox />
+      <Channels />
+      <Messages />
     </Row>
   </Container>
 );
 
-export default Chat;
+export default MainPage;

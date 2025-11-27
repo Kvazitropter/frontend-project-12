@@ -35,6 +35,7 @@ export const axiosBaseQuery = ({ baseUrl } = { baseUrl: '' }) => async ({
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: axiosBaseQuery({ baseUrl: '' }),
+  tagTypes: ['Channel'],
   endpoints: (builder) => ({
     getChannels: builder.query({
       query: () => ({
@@ -42,16 +43,15 @@ export const api = createApi({
         method: 'GET',
         headers: getAuthHeader(),
       }),
-      async onCacheEntryAdded(
-        _,
-        {
-          cacheDataLoaded, dispatch,
-        },
-      ) {
-        const { data: channels } = await cacheDataLoaded;
-        const generalChannel = channels.find(({ name }) => name === 'general') ?? channels[0];
-        dispatch(setActiveChannel(generalChannel.id));
+      async onQueryStarted(_, { queryFulfilled, getState, dispatch }) {
+        const { data: channels } = await queryFulfilled;
+        const state = getState();
+        if (state.ui.activeChannelId === null) {
+          const generalChannel = channels.find(({ name }) => name === 'general');
+          dispatch(setActiveChannel(generalChannel.id));
+        }
       },
+      providesTags: ['Channel'],
     }),
     addChannel: builder.mutation({
       query: (channel) => ({
@@ -60,6 +60,20 @@ export const api = createApi({
         data: channel,
         headers: getAuthHeader(),
       }),
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        const { data: channel } = await queryFulfilled;
+        dispatch(setActiveChannel(channel.id));
+      },
+      invalidatesTags: ['Channel'],
+    }),
+    updateChannel: builder.mutation({
+      query: ({ id, data }) => ({
+        url: routes.channelPath(id),
+        method: 'PATCH',
+        data,
+        headers: getAuthHeader(),
+      }),
+      invalidatesTags: ['Channel'],
     }),
     removeChannel: builder.mutation({
       query: (id) => ({
@@ -67,6 +81,14 @@ export const api = createApi({
         method: 'DELETE',
         headers: getAuthHeader(),
       }),
+      async onQueryStarted(_, { queryFulfilled, getState, dispatch }) {
+        const { data: channel } = await queryFulfilled;
+        const state = getState();
+        if (state.ui.activeChannelId === channel.id) {
+          dispatch(setActiveChannel(null));
+        }
+      },
+      invalidatesTags: ['Channel'],
     }),
     getMessages: builder.query({
       query: () => ({
@@ -96,6 +118,7 @@ export const api = createApi({
         await cacheEntryRemoved;
         socket.disconnect();
       },
+      providesTags: ['Channel'],
     }),
     addMessage: builder.mutation({
       query: (message) => ({
@@ -111,6 +134,7 @@ export const api = createApi({
 export const {
   useGetChannelsQuery,
   useAddChannelMutation,
+  useUpdateChannelMutation,
   useRemoveChannelMutation,
   useGetMessagesQuery,
   useAddMessageMutation,
