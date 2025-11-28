@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
-import { useGetChannelsQuery, useAddChannelMutation } from '../../services/apiSlice';
+import { useGetChannelsQuery, useAddChannelMutation } from '../../services/api/channelsApi.js';
 
 const Add = ({ handleHide }) => {
   const { data: channels } = useGetChannelsQuery();

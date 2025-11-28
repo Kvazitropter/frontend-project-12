@@ -2,10 +2,8 @@ import {
   Button, ButtonGroup, Col, Dropdown, Nav,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useGetChannelsQuery,
-} from '../services/apiSlice.js';
-import { setActiveChannel, setActiveModal, setClickedChannel } from '../services/uiSlice.js';
+import { useGetChannelsQuery } from '../services/api/channelsApi.js';
+import { setActiveChannel, setActiveModal, setClickedChannel } from '../services/slices/uiSlice.js';
 import getModal from './modals/index.js';
 
 const renderChannel = (

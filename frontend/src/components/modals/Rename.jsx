@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
-import { useGetChannelsQuery, useUpdateChannelMutation } from '../../services/apiSlice';
+import { useGetChannelsQuery, useUpdateChannelMutation } from '../../services/api/channelsApi.js';
 
 const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
   const { data: channels } = useGetChannelsQuery();

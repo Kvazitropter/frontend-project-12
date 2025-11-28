@@ -1,5 +1,5 @@
 import { Modal, Button } from 'react-bootstrap';
-import { useRemoveChannelMutation } from '../../services/apiSlice';
+import { useRemoveChannelMutation } from '../../services/api/channelsApi.js';
 
 const Remove = ({ handleHide, clickedChannelId }) => {
   const [removeChannel] = useRemoveChannelMutation();
