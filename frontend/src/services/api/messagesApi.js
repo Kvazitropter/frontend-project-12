@@ -32,7 +32,7 @@ const messagesApi = api.injectEndpoints({
         await cacheEntryRemoved;
         socket.disconnect();
       },
-      providesTags: (result) => result.map(({ channelId }) => ({ type: 'Channel', id: channelId })),
+      providesTags: (result) => result?.map(({ channelId }) => ({ type: 'Channel', id: channelId })),
     }),
     addMessage: builder.mutation({
       query: (message) => ({

@@ -2,10 +2,9 @@ import { Provider } from 'react-redux';
 import App from './components/App.jsx';
 import store from './services/index.js';
 
-const init = async () => (
+const app = () => (
   <Provider store={store}>
     <App />
   </Provider>
 );
-
-export default init;
+export default app;

@@ -9,7 +9,7 @@ const channelsApi = api.injectEndpoints({
         url: routes.channelsPath(),
         method: 'GET',
       }),
-      providesTags: (result) => result.map(({ id }) => ({ type: 'Channel', id })),
+      providesTags: (result) => result?.map(({ id }) => ({ type: 'Channel', id })),
     }),
     addChannel: builder.mutation({
       query: (channel) => ({

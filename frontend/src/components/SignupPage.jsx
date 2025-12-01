@@ -5,40 +5,47 @@ import {
 } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import signupAvatar from '../assets/signupAvatar.jpg';
 import { useSignupMutation } from '../services/api/userApi.js';
 
 const SignupForm = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const usernameInput = useRef(null);
-  const [signup, { isLoading, isSuccess, isError: isAuthError }] = useSignupMutation();
-  const existingUserError = 'Такой пользователь уже существует';
+  const [
+    signup,
+    { isLoading: isAuthLoading, isSuccess: isAuthSuccess, error: authError },
+  ] = useSignupMutation();
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isAuthSuccess) {
       navigate('/');
     }
-    usernameInput.current?.focus();
-  }, [isLoading, isSuccess, navigate]);
+  }, [isAuthSuccess, navigate]);
+
+  useEffect(() => {
+    usernameInput.current.focus();
+  }, [authError]);
 
   const validationSchema = yup.object().shape({
     username: yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('signup.form.error.username.notInRange'))
+      .max(20, t('signup.form.error.username.notInRange'))
+      .required(t('signup.form.error.username.required')),
     password: yup.string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательное поле'),
-    passwordConfirm: yup.string()
-      .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
-      .required('Обязательное поле'),
+      .min(6, t('signup.form.error.password.short'))
+      .required(t('signup.form.error.password.required')),
+    confirmPassword: yup.string()
+      .oneOf([yup.ref('password'), null], t('signup.form.error.confirmPassword.notMatch'))
+      .required(t('signup.form.error.confirmPassword.required')),
   });
 
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
-      passwordConfirm: '',
+      confirmPassword: '',
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -54,14 +61,14 @@ const SignupForm = () => {
       className="w-50"
       onSubmit={formik.handleSubmit}
     >
-      <h1 className="text-center mb-4">Регистрация</h1>
-      <Form.FloatingLabel className="mb-3" label="Имя пользователя" controlId="username">
+      <h1 className="text-center mb-4">{t('signup.header')}</h1>
+      <Form.FloatingLabel className="mb-3" label={t('signup.form.username')} controlId="username">
         <Form.Control
-          placeholder="Имя пользователя"
+          placeholder={t('signup.form.username')}
           name="username"
           autoComplete="username"
           required
-          isInvalid={(formik.touched.username && !!formik.errors.username) || isAuthError}
+          isInvalid={(formik.touched.username && !!formik.errors.username) || authError}
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -71,14 +78,14 @@ const SignupForm = () => {
           {formik.errors.username}
         </Form.Control.Feedback>
       </Form.FloatingLabel>
-      <Form.FloatingLabel className="mb-3" label="Пароль" controlId="password">
+      <Form.FloatingLabel className="mb-3" label={t('signup.form.password')} controlId="password">
         <Form.Control
-          placeholder="Пароль"
+          placeholder={t('signup.form.password')}
           name="password"
           autoComplete="new-password"
           required
           type="password"
-          isInvalid={(formik.touched.password && !!formik.errors.password) || isAuthError}
+          isInvalid={(formik.touched.password && !!formik.errors.password) || authError}
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -87,51 +94,56 @@ const SignupForm = () => {
           {formik.errors.password}
         </Form.Control.Feedback>
       </Form.FloatingLabel>
-      <Form.FloatingLabel className="mb-4" label="Подтвердите пароль" controlId="passwordConfirm">
+      <Form.FloatingLabel className="mb-4" label={t('signup.form.confirmPassword')} controlId="confirmPassword">
         <Form.Control
-          placeholder="Подтвердите пароль"
-          name="passwordConfirm"
+          placeholder={t('signup.form.confirmPassword')}
+          name="confirmPassword"
           autoComplete="new-password"
           required
           type="password"
           isInvalid={
-            (formik.touched.passwordConfirm && !!formik.errors.passwordConfirm) || isAuthError
+            (formik.touched.confirmPassword && !!formik.errors.confirmPassword) || authError
           }
-          value={formik.values.passwordConfirm}
+          value={formik.values.confirmPassword}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
         />
         <Form.Control.Feedback type="invalid" tooltip>
-          {formik.errors.passwordConfirm ?? existingUserError}
+          {formik.errors.confirmPassword
+            ?? (authError?.status === 409 ? t('signup.form.error.existingUser') : t('signup.form.error.failed'))}
         </Form.Control.Feedback>
       </Form.FloatingLabel>
       <Button
         type="submit"
         variant="outline-primary"
         className="w-100"
-        disabled={isLoading}
+        disabled={isAuthLoading}
       >
-        Зарегистрироваться
+        {t('signup.form.submit')}
       </Button>
     </Form>
   );
 };
 
-const SignupPage = () => (
-  <Container fluid className="h-100">
-    <Row className="justify-content-center align-content-center h-100">
-      <Col xs={12} md={8} xxl={6}>
-        <Card className="shadow-sm">
-          <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-            <div>
-              <Image alt="Регистрация" src={signupAvatar} className="rounded-circle" />
-            </div>
-            <SignupForm />
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  </Container>
-);
+const SignupPage = () => {
+  const { t } = useTranslation();
+
+  return (
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col xs={12} md={8} xxl={6}>
+          <Card className="shadow-sm">
+            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+              <div>
+                <Image alt={t('signup.header')} src={signupAvatar} className="rounded-circle" />
+              </div>
+              <SignupForm />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default SignupPage;

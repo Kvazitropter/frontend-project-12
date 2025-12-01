@@ -2,24 +2,29 @@ import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useGetChannelsQuery, useAddChannelMutation } from '../../services/api/channelsApi.js';
 
 const Add = ({ handleHide }) => {
+  const { t } = useTranslation();
+  const inputRef = useRef(null);
   const { data: channels } = useGetChannelsQuery();
   const channelsNames = channels?.map(({ name }) => name);
-  const [addChannel] = useAddChannelMutation();
-  const inputRef = useRef();
+  const [
+    addChannel,
+    { isLoading: isAddingChannel, error: addChannelError },
+  ] = useAddChannelMutation();
 
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [addChannelError]);
 
   const validationSchema = yup.object().shape({
     name: yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channelsNames, 'Должно быть уникальным')
-      .required('Обязательное поле'),
+      .min(3, t('channels.add.modal.error.name.notInRange'))
+      .max(20, t('channels.add.modal.error.name.notInRange'))
+      .notOneOf(channelsNames, t('channels.add.modal.error.name.notUniq'))
+      .required(t('channels.add.modal.error.name.required')),
   });
 
   const formik = useFormik({
@@ -31,14 +36,13 @@ const Add = ({ handleHide }) => {
       addChannel({
         name: values.name,
       });
-      handleHide();
     },
   });
 
   return (
     <Modal show centered onHide={handleHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('channels.add.modal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -50,13 +54,19 @@ const Add = ({ handleHide }) => {
               ref={inputRef}
               value={formik.values.name}
               onChange={formik.handleChange}
-              isInvalid={formik.errors.name && formik.touched.name}
+              isInvalid={(formik.errors.name && formik.touched.name) || addChannelError}
             />
-            <Form.Label htmlFor="name" className="visually-hidden">Имя канала</Form.Label>
-            <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
+            <Form.Label htmlFor="name" className="visually-hidden">{t('channels.add.modal.label')}</Form.Label>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.name ?? (addChannelError && t('channels.add.modal.error.failed'))}
+            </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button variant="secondary" className="me-2" onClick={handleHide}>Отменить</Button>
-              <Button type="submit" variant="primary">Отправить</Button>
+              <Button variant="secondary" className="me-2" onClick={handleHide}>
+                {t('channels.add.modal.cancel')}
+              </Button>
+              <Button type="submit" variant="primary" disabled={isAddingChannel}>
+                {t('channels.add.modal.submit')}
+              </Button>
             </div>
           </div>
         </Form>

@@ -1,28 +1,35 @@
 import { Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useRemoveChannelMutation } from '../../services/api/channelsApi.js';
 
 const Remove = ({ handleHide, clickedChannelId }) => {
-  const [removeChannel] = useRemoveChannelMutation();
+  const { t } = useTranslation();
+  const [
+    removeChannel,
+    { isLoading: isRemovingChannel, error: removeChannelError },
+  ] = useRemoveChannelMutation();
 
   return (
     <Modal show centered onHide={handleHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('channels.remove.modal.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Вы уверены?</p>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleHide}>Отменить</Button>
+        <p className="lead">{t('channels.remove.modal.body')}</p>
+        {removeChannelError
+          && <div className="text-danger">{t('channels.remove.modal.error')}</div>}
+        <div className="d-flex justify-content-end">
+          <Button variant="secondary" className="me-2" onClick={handleHide}>
+            {t('channels.remove.modal.cancel')}
+          </Button>
           <Button
             variant="danger"
-            onClick={() => {
-              removeChannel(clickedChannelId);
-              handleHide();
-            }}
+            onClick={() => removeChannel(clickedChannelId)}
+            disabled={isRemovingChannel}
           >
-            Удалить
+            {t('channels.remove.modal.submit')}
           </Button>
-        </Modal.Footer>
+        </div>
       </Modal.Body>
     </Modal>
   );

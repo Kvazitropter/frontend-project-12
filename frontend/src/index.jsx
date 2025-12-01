@@ -1,9 +1,10 @@
 import ReactDOM from 'react-dom/client';
-import init from './init.jsx';
+import app from './init.jsx';
+import './i18next.js';
 
-const app = async () => {
+const runApp = async () => {
   const root = ReactDOM.createRoot(document.querySelector('#chat'));
-  root.render(await init());
+  root.render(await app());
 };
 
-app();
+runApp();

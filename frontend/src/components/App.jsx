@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import NotFoundPage from './NotFoundPage.jsx';
 import LoginPage from './LoginPage.jsx';
 import SignupPage from './SignupPage.jsx';
@@ -22,44 +23,49 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
-const App = () => {
+const Navigation = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleLogout = () => dispatch(clearUserData());
 
   return (
-    <div className="d-flex flex-column h-100">
-      <Navbar expand="lg" variant="light" bg="white" className="shadow-sm">
-        <Container>
-          <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
-          <Button onClick={handleLogout}>Выйти</Button>
-        </Container>
-      </Navbar>
-      <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={(
-              <PrivateRoute>
-                <MainPage />
-              </PrivateRoute>
-          )}
-          />
-          <Route
-            path="/login"
-            element={<LoginPage />}
-          />
-          <Route
-            path="/signup"
-            element={<SignupPage />}
-          />
-          <Route
-            path="*"
-            element={<NotFoundPage />}
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Navbar expand="lg" variant="light" bg="white" className="shadow-sm">
+      <Container>
+        <Navbar.Brand href="/">{t('navigation.brand')}</Navbar.Brand>
+        <Button onClick={handleLogout}>{t('navigation.logoutBtn')}</Button>
+      </Container>
+    </Navbar>
   );
 };
+
+const App = () => (
+  <div className="d-flex flex-column h-100">
+    <Navigation />
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={(
+            <PrivateRoute>
+              <MainPage />
+            </PrivateRoute>
+          )}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+        <Route
+          path="/signup"
+          element={<SignupPage />}
+        />
+        <Route
+          path="*"
+          element={<NotFoundPage />}
+        />
+      </Routes>
+    </BrowserRouter>
+  </div>
+);
 
 export default App;
