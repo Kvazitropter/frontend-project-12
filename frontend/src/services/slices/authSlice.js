@@ -30,6 +30,7 @@ const handleAuthSuccess = (_, { payload }) => {
 const authSlice = createSlice({
   name: 'auth',
   initialState: { username: null, token: null },
+  // initialState: getInitialState(),
   reducers: {
     clearUserData: () => {
       localStorage.removeItem('user');

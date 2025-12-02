@@ -9,7 +9,6 @@ import { Navbar, Container, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import NotFoundPage from './NotFoundPage.jsx';
 import LoginPage from './LoginPage.jsx';
 import SignupPage from './SignupPage.jsx';
@@ -29,12 +28,14 @@ const Navigation = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleLogout = () => dispatch(clearUserData());
+  const isLoggedIn = useSelector((state) => state.auth.token !== null);
+  const logoutBtn = <Button onClick={handleLogout}>{t('navigation.logoutBtn')}</Button>;
 
   return (
     <Navbar expand="lg" variant="light" bg="white" className="shadow-sm">
       <Container>
         <Navbar.Brand href="/">{t('navigation.brand')}</Navbar.Brand>
-        <Button onClick={handleLogout}>{t('navigation.logoutBtn')}</Button>
+        {isLoggedIn && logoutBtn}
       </Container>
     </Navbar>
   );

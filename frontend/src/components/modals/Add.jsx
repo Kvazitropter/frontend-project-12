@@ -33,9 +33,9 @@ const Add = ({ handleHide }) => {
       name: '',
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: ({ name }) => {
       addChannel({
-        name: values.name,
+        name,
       }).unwrap()
         .then(() => toast.success(t('channels.add.alert.success')))
         .catch(() => toast.error(t('channels.add.alert.failed')));

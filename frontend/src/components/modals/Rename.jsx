@@ -33,11 +33,11 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
       name: clickedChannelName,
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: ({ name }) => {
       updateChannel({
         id: clickedChannelId,
         data: {
-          name: values.name,
+          name,
         },
       }).unwrap()
         .then(() => toast.success(t('channels.rename.alert.success')))

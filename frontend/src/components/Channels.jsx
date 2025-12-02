@@ -7,9 +7,11 @@ import { toast } from 'react-toastify';
 import { useGetChannelsQuery } from '../services/api/channelsApi.js';
 import { setActiveChannel, setModalInfo, clearModalInfo } from '../services/slices/uiSlice.js';
 import getModal from './modals/index.js';
+import useFilter from '../hooks/useFilter.js';
 
 const Channel = ({ channel }) => {
   const { t } = useTranslation();
+  const { filterProfanity } = useFilter();
   const dispatch = useDispatch();
   const { id, name, removable } = channel;
   const { activeChannelId } = useSelector((state) => state.ui);
@@ -25,7 +27,7 @@ const Channel = ({ channel }) => {
       onClick={() => dispatch(setActiveChannel(id))}
     >
       <span className="me-1">#</span>
-      {name}
+      {filterProfanity(name)}
     </Button>
   );
 
