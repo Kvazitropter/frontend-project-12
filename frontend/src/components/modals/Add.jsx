@@ -3,6 +3,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useGetChannelsQuery, useAddChannelMutation } from '../../services/api/channelsApi.js';
 
 const Add = ({ handleHide }) => {
@@ -35,7 +36,9 @@ const Add = ({ handleHide }) => {
     onSubmit: (values) => {
       addChannel({
         name: values.name,
-      });
+      }).unwrap()
+        .then(() => toast.success(t('channels.add.alert.success')))
+        .catch(() => toast.error(t('channels.add.alert.failed')));
     },
   });
 
@@ -54,12 +57,10 @@ const Add = ({ handleHide }) => {
               ref={inputRef}
               value={formik.values.name}
               onChange={formik.handleChange}
-              isInvalid={(formik.errors.name && formik.touched.name) || addChannelError}
+              isInvalid={formik.errors.name && formik.touched.name}
             />
             <Form.Label htmlFor="name" className="visually-hidden">{t('channels.add.modal.label')}</Form.Label>
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.name ?? (addChannelError && t('channels.add.modal.error.failed'))}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button variant="secondary" className="me-2" onClick={handleHide}>
                 {t('channels.add.modal.cancel')}

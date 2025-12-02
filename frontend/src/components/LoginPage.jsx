@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import loginAvatar from '../assets/loginAvatar.jpg';
 import { useLoginMutation } from '../services/api/userApi.js';
 
@@ -36,7 +37,8 @@ const LoginForm = () => {
       login({
         username: values.username,
         password: values.password,
-      });
+      }).unwrap()
+        .catch(() => toast.error(t('login.alert.failed')));
     },
   });
 
@@ -73,7 +75,7 @@ const LoginForm = () => {
           onChange={formik.handleChange}
         />
         <Form.Control.Feedback type="invalid" tooltip>
-          {loginError?.status === 401 ? t('login.form.error.wrongData') : t('login.form.error.failed')}
+          {loginError?.status === 401 && t('login.form.error.wrongData')}
         </Form.Control.Feedback>
       </Form.FloatingLabel>
       <Button

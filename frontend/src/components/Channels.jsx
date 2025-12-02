@@ -3,6 +3,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useGetChannelsQuery } from '../services/api/channelsApi.js';
 import { setActiveChannel, setModalInfo, clearModalInfo } from '../services/slices/uiSlice.js';
 import getModal from './modals/index.js';
@@ -80,6 +81,7 @@ const Channels = () => {
     data: channels,
     isLoading: isChannelsLoading,
     error: channelsLoadError,
+    isSuccess: isChannelsLoaded,
   } = useGetChannelsQuery();
   const dispatch = useDispatch();
   const { modalInfo } = useSelector((state) => state.ui);
@@ -89,14 +91,19 @@ const Channels = () => {
 
   const renderChannelsList = () => {
     if (isChannelsLoading) {
-      return t('network.loading');
+      return <div>{t('network.loading')}</div>;
     }
     if (channelsLoadError) {
       switch (channelsLoadError.status) {
-        case 401: return t('network.error.notAuth');
-        default: return t('network.error.failed');
+        case 401:
+          toast.error(t('network.error.notAuth'));
+          break;
+        default:
+          toast.error(t('channels.error.failed'));
+          break;
       }
     }
+    if (!isChannelsLoaded) return null;
     return channels
       .map((channel) => <Channel key={channel.id} channel={channel} />);
   };
@@ -110,7 +117,7 @@ const Channels = () => {
             as="button"
             vertical
             className="p-0 text-primary btn"
-            disabled={isChannelsLoading}
+            disabled={isChannelsLoading || channelsLoadError}
             onClick={handleAdd}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-plus-square" viewBox="0 0 16 16">

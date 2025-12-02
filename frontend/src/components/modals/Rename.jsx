@@ -3,6 +3,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useGetChannelsQuery, useUpdateChannelMutation } from '../../services/api/channelsApi.js';
 
 const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
@@ -38,7 +39,9 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
         data: {
           name: values.name,
         },
-      });
+      }).unwrap()
+        .then(() => toast.success(t('channels.rename.alert.success')))
+        .catch(() => toast.error(t('channels.rename.alert.failed')));
     },
   });
 

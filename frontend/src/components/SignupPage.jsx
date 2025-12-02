@@ -6,6 +6,7 @@ import {
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import signupAvatar from '../assets/signupAvatar.jpg';
 import { useSignupMutation } from '../services/api/userApi.js';
 
@@ -52,7 +53,8 @@ const SignupForm = () => {
       signup({
         username: values.username,
         password: values.password,
-      });
+      }).unwrap()
+        .catch(() => toast.error(t('signup.alert.failed')));
     },
   });
 
@@ -110,7 +112,7 @@ const SignupForm = () => {
         />
         <Form.Control.Feedback type="invalid" tooltip>
           {formik.errors.confirmPassword
-            ?? (authError?.status === 409 ? t('signup.form.error.existingUser') : t('signup.form.error.failed'))}
+            ?? (authError?.status === 409 && t('signup.form.error.existingUser'))}
         </Form.Control.Feedback>
       </Form.FloatingLabel>
       <Button

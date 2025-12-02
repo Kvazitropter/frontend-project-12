@@ -1,5 +1,6 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useRemoveChannelMutation } from '../../services/api/channelsApi.js';
 
 const Remove = ({ handleHide, clickedChannelId }) => {
@@ -8,6 +9,12 @@ const Remove = ({ handleHide, clickedChannelId }) => {
     removeChannel,
     { isLoading: isRemovingChannel, error: removeChannelError },
   ] = useRemoveChannelMutation();
+
+  const handleRemove = () => {
+    removeChannel(clickedChannelId).unwrap()
+      .then(() => toast.success(t('channels.remove.alert.success')))
+      .catch(() => toast.error(t('channels.remove.alert.failed')));
+  };
 
   return (
     <Modal show centered onHide={handleHide}>
@@ -24,7 +31,7 @@ const Remove = ({ handleHide, clickedChannelId }) => {
           </Button>
           <Button
             variant="danger"
-            onClick={() => removeChannel(clickedChannelId)}
+            onClick={handleRemove}
             disabled={isRemovingChannel}
           >
             {t('channels.remove.modal.submit')}

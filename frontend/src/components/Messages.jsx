@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useRef, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { useAddMessageMutation, useGetMessagesQuery } from '../services/api/messagesApi.js';
 import { useGetChannelsQuery } from '../services/api/channelsApi.js';
 
@@ -85,61 +86,51 @@ const Messages = () => {
   const {
     data: messages,
     isLoading: isMessagesLoading,
+    isSuccess: isMessagesLoaded,
     error: messagesLoadError,
   } = useGetMessagesQuery();
   const {
     data: channels,
     isLoading: isChannelsLoading,
-    error: channelsLoadError,
   } = useGetChannelsQuery();
   const { activeChannelId } = useSelector((state) => state.ui);
+  const activeChannel = channels?.find((channel) => channel.id === activeChannelId);
+  const activeChannelName = (activeChannel && `# ${activeChannel.name}`) ?? t('channels.activeError');
+  const shownMessages = messages?.filter(({ channelId }) => channelId === activeChannelId);
+  const messagesCount = (isMessagesLoaded && t('messages.count', { count: shownMessages.length }));
 
-  const getActiveChannelName = () => {
-    if (isChannelsLoading) {
-      return t('network.loading');
-    }
-    if (channelsLoadError) {
-      switch (channelsLoadError.status) {
-        case 401: return t('network.error.notAuth');
-        default: return t('network.error.failed');
-      }
-    }
-    return channels
-      .find((channel) => channel.id === activeChannelId)
-      ?.name;
-  };
-
-  const getShownMessages = () => {
+  const renderMessages = () => {
     if (isMessagesLoading) {
-      return t('network.loading');
+      return <div>{t('network.loading')}</div>;
     }
     if (messagesLoadError) {
       switch (messagesLoadError.status) {
-        case 401: return t('network.error.notAuth');
-        default: return t('network.error.failed');
+        case 401:
+          toast.error(t('network.error.notAuth'));
+          break;
+        default:
+          toast.error(t('messages.error.failed'));
+          break;
       }
     }
-    return messages
-      .filter(({ channelId }) => channelId === activeChannelId)
+    if (!isMessagesLoaded) return null;
+    return shownMessages
       .map((message) => <Message key={message.id} message={message} />);
   };
-
-  const shownMessages = getShownMessages();
-  const messagesCount = Array.isArray(shownMessages) ? t('messages.count', { count: shownMessages?.length }) : shownMessages;
 
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
         <div className="bg-light mb-4 p-3 shadow-sm small">
           <p className="m-0">
-            <b>{getActiveChannelName()}</b>
+            <b>{isChannelsLoading ? t('network.loading') : activeChannelName}</b>
           </p>
           <span className="text-muted">
-            {messagesCount}
+            {isMessagesLoading ? t('network.loading') : messagesCount}
           </span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-          {shownMessages}
+          {renderMessages()}
         </div>
         <div className="mt-auto px-5 py-3">
           <MessageForm />

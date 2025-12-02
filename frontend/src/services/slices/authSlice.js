@@ -1,23 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import api from '../api/api.js';
 
-const getInitialState = () => {
-  try {
-    const existingUserData = JSON.parse(localStorage.getItem('user') ?? '{}');
-    if (existingUserData.token && existingUserData.username) {
-      return {
-        username: existingUserData.username,
-        token: existingUserData.token,
-      };
-    }
-  } catch {
-    console.error('Failed to parse user data from localStorage.');
-  }
-  return {
-    username: null,
-    token: null,
-  };
-};
+// const getInitialState = () => {
+//   try {
+//     const existingUserData = JSON.parse(localStorage.getItem('user') ?? '{}');
+//     if (existingUserData.token && existingUserData.username) {
+//       return {
+//         username: existingUserData.username,
+//         token: existingUserData.token,
+//       };
+//     }
+//   } catch {
+//     console.error('Failed to parse user data from localStorage.');
+//   }
+//   return {
+//     username: null,
+//     token: null,
+//   };
+// };
 
 const handleAuthSuccess = (_, { payload }) => {
   localStorage.setItem('user', JSON.stringify(payload));
@@ -29,7 +29,7 @@ const handleAuthSuccess = (_, { payload }) => {
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: getInitialState(),
+  initialState: { username: null, token: null },
   reducers: {
     clearUserData: () => {
       localStorage.removeItem('user');

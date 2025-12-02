@@ -12,12 +12,14 @@ export default {
         submit: 'Войти',
         error: {
           wrongData: 'Неверные имя пользователя или пароль',
-          failed: 'Не удалось войти',
         },
       },
       footer: {
         message: 'Нет аккаунта?',
         registrationLink: 'Регистрация',
+      },
+      alert: {
+        failed: 'Не удалось войти',
       },
     },
     signup: {
@@ -45,13 +47,16 @@ export default {
             required: 'Обязательное поле',
           },
           existingUser: 'Такой пользователь уже существует',
-          failed: 'Не удалось зарегистрировать нового пользователя',
         },
+      },
+      alert: {
+        failed: 'Не удалось зарегистрировать нового пользователя',
       },
     },
     channels: {
       title: 'Каналы',
       withTag: '# {{channel.name}}',
+      activeError: 'Ошибка',
       add: {
         hidden: 'Создать канал',
         modal: {
@@ -65,8 +70,11 @@ export default {
               required: 'Обязательное поле',
               notUniq: 'Должно быть уникальным',
             },
-            failed: 'Не удалось добавить канал',
           },
+        },
+        alert: {
+          success: 'Канал создан',
+          failed: 'Не удалось добавить канал',
         },
       },
       remove: {
@@ -76,7 +84,10 @@ export default {
           body: 'Вы уверены?',
           cancel: 'Отменить',
           submit: 'Удалить',
-          error: 'Не удалось удалить канал',
+        },
+        alert: {
+          success: 'Канал удалён',
+          failed: 'Не удалось удалить канал',
         },
       },
       rename: {
@@ -92,9 +103,15 @@ export default {
               required: 'Обязательное поле',
               notUniq: 'Должно быть уникальным',
             },
-            failed: 'Не удалось переименовать канал',
           },
         },
+        alert: {
+          success: 'Канал переименован',
+          failed: 'Не удалось переименовать канал',
+        },
+      },
+      error: {
+        failed: 'Не удалось загрузить каналы',
       },
     },
     messages: {
@@ -106,6 +123,9 @@ export default {
         label: 'Новое сообщение',
         placeholder: 'Введите сообщение...',
       },
+      error: {
+        failed: 'Не удалось загрузить сообщения',
+      },
     },
     notFoundPage: {
       title: 'Страница не найдена',
@@ -116,8 +136,6 @@ export default {
       loading: 'Загрузка...',
       error: {
         notAuth: 'Ошибка аутентификации',
-        noConnection: 'Нет соединения',
-        failed: 'Не удалось загрузить',
       },
     },
   },
