@@ -5,8 +5,10 @@ import store from './services/index.js';
 import FilterProvider from './providers/FilterProvider.jsx';
 
 const rollbarConfig = {
-  accessToken: 'POST_CLIENT_ITEM_ACCESS_TOKEN',
+  accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
   environment: 'production',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
 };
 
 const init = () => (
