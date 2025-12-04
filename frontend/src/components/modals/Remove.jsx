@@ -12,29 +12,29 @@ const Remove = ({ handleHide, clickedChannelId }) => {
 
   const handleRemove = () => {
     removeChannel(clickedChannelId).unwrap()
-      .then(() => toast.success(t('channels.remove.alert.success')))
-      .catch(() => toast.error(t('channels.remove.alert.failed')));
+      .then(() => toast.success(t('channels.removed')))
+      .catch(() => toast.error(t('channels.modalRemove.failed')));
   };
 
   return (
     <Modal show centered onHide={handleHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('channels.remove.modal.title')}</Modal.Title>
+        <Modal.Title>{t('channels.modalRemove.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">{t('channels.remove.modal.body')}</p>
+        <p className="lead">{t('channels.modalRemove.body')}</p>
         {removeChannelError
-          && <div className="text-danger">{t('channels.remove.modal.error')}</div>}
+          && <div className="text-danger">{t('channels.modalRemovel.error')}</div>}
         <div className="d-flex justify-content-end">
           <Button variant="secondary" className="me-2" onClick={handleHide}>
-            {t('channels.remove.modal.cancel')}
+            {t('channels.modalRemove.cancel')}
           </Button>
           <Button
             variant="danger"
             onClick={handleRemove}
             disabled={isRemovingChannel}
           >
-            {t('channels.remove.modal.submit')}
+            {t('channels.modalRemove.submit')}
           </Button>
         </div>
       </Modal.Body>

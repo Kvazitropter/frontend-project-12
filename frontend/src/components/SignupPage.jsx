@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 import {
-  Form, Card, Container, Image, Button, Col, Row,
+  Form, FloatingLabel, Card, Container, Image, Button, Col, Row,
 } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
@@ -31,15 +31,15 @@ const SignupForm = () => {
 
   const validationSchema = yup.object().shape({
     username: yup.string()
-      .min(3, t('signup.form.error.username.notInRange'))
-      .max(20, t('signup.form.error.username.notInRange'))
-      .required(t('signup.form.error.username.required')),
+      .min(3, t('signup.error.username.notInRange'))
+      .max(20, t('signup.error.username.notInRange'))
+      .required(t('signup.error.required')),
     password: yup.string()
-      .min(6, t('signup.form.error.password.short'))
-      .required(t('signup.form.error.password.required')),
+      .min(6, t('signup.error.password.short'))
+      .required(t('signup.error.required')),
     confirmPassword: yup.string()
-      .oneOf([yup.ref('password'), null], t('signup.form.error.confirmPassword.notMatch'))
-      .required(t('signup.form.error.confirmPassword.required')),
+      .oneOf([yup.ref('password'), null], t('signup.error.confirmPassword.notMatch'))
+      .required(t('signup.error.required')),
   });
 
   const formik = useFormik({
@@ -54,7 +54,7 @@ const SignupForm = () => {
         username: values.username,
         password: values.password,
       }).unwrap()
-        .catch(() => toast.error(t('signup.alert.failed')));
+        .catch(() => toast.error(t('signup.error.failed')));
     },
   });
 
@@ -64,9 +64,9 @@ const SignupForm = () => {
       onSubmit={formik.handleSubmit}
     >
       <h1 className="text-center mb-4">{t('signup.header')}</h1>
-      <Form.FloatingLabel className="mb-3" label={t('signup.form.username')} controlId="username">
+      <FloatingLabel className="mb-3" label={t('signup.username')} controlId="username">
         <Form.Control
-          placeholder={t('signup.form.username')}
+          placeholder={t('signup.username')}
           name="username"
           autoComplete="username"
           required
@@ -79,10 +79,10 @@ const SignupForm = () => {
         <Form.Control.Feedback type="invalid" tooltip>
           {formik.errors.username}
         </Form.Control.Feedback>
-      </Form.FloatingLabel>
-      <Form.FloatingLabel className="mb-3" label={t('signup.form.password')} controlId="password">
+      </FloatingLabel>
+      <FloatingLabel className="mb-3" label={t('signup.password')} controlId="password">
         <Form.Control
-          placeholder={t('signup.form.password')}
+          placeholder={t('signup.password')}
           name="password"
           autoComplete="new-password"
           required
@@ -95,10 +95,10 @@ const SignupForm = () => {
         <Form.Control.Feedback type="invalid" tooltip>
           {formik.errors.password}
         </Form.Control.Feedback>
-      </Form.FloatingLabel>
-      <Form.FloatingLabel className="mb-4" label={t('signup.form.confirmPassword')} controlId="confirmPassword">
+      </FloatingLabel>
+      <FloatingLabel className="mb-4" label={t('signup.confirmPassword')} controlId="confirmPassword">
         <Form.Control
-          placeholder={t('signup.form.confirmPassword')}
+          placeholder={t('signup.confirmPassword')}
           name="confirmPassword"
           autoComplete="new-password"
           required
@@ -112,16 +112,16 @@ const SignupForm = () => {
         />
         <Form.Control.Feedback type="invalid" tooltip>
           {formik.errors.confirmPassword
-            ?? (authError?.status === 409 && t('signup.form.error.existingUser'))}
+            ?? (authError?.status === 409 && t('signup.error.existingUser'))}
         </Form.Control.Feedback>
-      </Form.FloatingLabel>
+      </FloatingLabel>
       <Button
         type="submit"
         variant="outline-primary"
         className="w-100"
         disabled={isAuthLoading}
       >
-        {t('signup.form.submit')}
+        {t('signup.submit')}
       </Button>
     </Form>
   );

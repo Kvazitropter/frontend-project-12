@@ -7,12 +7,12 @@ const NotFoundPage = () => {
 
   return (
     <Card bsPrefix="text-center">
-      <Image alt={t('notFoundPage.title')} className="h-25" fluid src={notFoundImg} />
-      <Card.Title as="h1" bsPrefix="text-muted" className="h4">{t('notFoundPage.title')}</Card.Title>
+      <Image alt={t('notFound.title')} className="h-25" fluid src={notFoundImg} />
+      <Card.Title as="h1" bsPrefix="text-muted" className="h4">{t('notFound.title')}</Card.Title>
       <Card.Text bsPrefix="text-muted">
-        {t('notFoundPage.redirectMessage')}
+        {t('notFound.redirectMessage')}
         {' '}
-        <Card.Link href="/">{t('notFoundPage.mainPageLink')}</Card.Link>
+        <Card.Link href="/">{t('notFound.toMainPage')}</Card.Link>
       </Card.Text>
     </Card>
   );

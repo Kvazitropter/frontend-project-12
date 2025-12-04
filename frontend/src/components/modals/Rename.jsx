@@ -22,10 +22,10 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
 
   const validationSchema = yup.object().shape({
     name: yup.string()
-      .min(3, t('channels.rename.modal.error.name.notInRange'))
-      .max(20, t('channels.rename.modal.error.name.notInRange'))
-      .notOneOf(channelsNames, t('channels.rename.modal.error.name.notUniq'))
-      .required(t('channels.rename.modal.error.name.required')),
+      .min(3, t('channels.modalRename.error.name.notInRange'))
+      .max(20, t('channels.modalRename.error.name.notInRange'))
+      .notOneOf(channelsNames, t('channels.modalRename.error.name.notUniq'))
+      .required(t('channels.modalRename.error.name.required')),
   });
 
   const formik = useFormik({
@@ -40,15 +40,15 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
           name,
         },
       }).unwrap()
-        .then(() => toast.success(t('channels.rename.alert.success')))
-        .catch(() => toast.error(t('channels.rename.alert.failed')));
+        .then(() => toast.success(t('channels.renamed')))
+        .catch(() => toast.error(t('channels.modalRename.error.failed')));
     },
   });
 
   return (
     <Modal show centered onHide={handleHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('channels.rename.modal.title')}</Modal.Title>
+        <Modal.Title>{t('channels.modalRename.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -61,16 +61,14 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
             onChange={formik.handleChange}
             isInvalid={(formik.errors.name && formik.touched.name) || updateChannelError}
           />
-          <Form.Label htmlFor="name" className="visually-hidden">{t('channels.rename.modal.label')}</Form.Label>
-          <Form.Control.Feedback type="invalid">
-            {formik.errors.name ?? (updateChannelError && t('channels.rename.modal.error.failed'))}
-          </Form.Control.Feedback>
+          <Form.Label htmlFor="name" className="visually-hidden">{t('channels.modalRename.label')}</Form.Label>
+          <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
           <div className="d-flex justify-content-end">
             <Button variant="secondary" className="me-2" onClick={handleHide}>
-              {t('channels.rename.modal.cancel')}
+              {t('channels.modalRename.cancel')}
             </Button>
             <Button type="submit" variant="primary" disabled={isUpdatingChannel}>
-              {t('channels.rename.modal.submit')}
+              {t('channels.modalRename.submit')}
             </Button>
           </div>
         </Form>

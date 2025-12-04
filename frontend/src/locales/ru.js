@@ -2,111 +2,86 @@ export default {
   translation: {
     navigation: {
       brand: 'Hexlet Chat',
-      logoutBtn: 'Выйти',
+      logout: 'Выйти',
     },
     login: {
-      form: {
-        header: 'Войти',
-        username: 'Ваш ник',
-        password: 'Пароль',
-        submit: 'Войти',
-        error: {
-          wrongData: 'Неверные имя пользователя или пароль',
-        },
-      },
-      footer: {
-        message: 'Нет аккаунта?',
-        registrationLink: 'Регистрация',
-      },
-      alert: {
+      header: 'Войти',
+      username: 'Ваш ник',
+      password: 'Пароль',
+      submit: 'Войти',
+      wrongData: 'Неверные имя пользователя или пароль',
+      noAcc: 'Нет аккаунта?',
+      registration: 'Регистрация',
+      error: {
         failed: 'Не удалось войти',
       },
     },
     signup: {
       header: 'Регистрация',
-      form: {
-        username: 'Имя пользователя',
-        password: 'Пароль',
-        confirmPassword: 'Подтвердите пароль',
-        submit: 'Зарегистрироваться',
-        error: {
-          username: {
-            notInRange: 'От 3 до 20 символов',
-            required: 'Обязательное поле',
-          },
-          email: {
-            notInRange: 'От 3 до 20 символов',
-            required: 'Обязательное поле',
-          },
-          password: {
-            short: 'Не менее 6 символов',
-            required: 'Обязательное поле',
-          },
-          confirmPassword: {
-            notMatch: 'Пароли должны совпадать',
-            required: 'Обязательное поле',
-          },
-          existingUser: 'Такой пользователь уже существует',
+      username: 'Имя пользователя',
+      password: 'Пароль',
+      confirmPassword: 'Подтвердите пароль',
+      submit: 'Зарегистрироваться',
+      error: {
+        required: 'Обязательное поле',
+        username: {
+          notInRange: 'От 3 до 20 символов',
         },
-      },
-      alert: {
+        email: {
+          notInRange: 'От 3 до 20 символов',
+        },
+        password: {
+          short: 'Не менее 6 символов',
+        },
+        confirmPassword: {
+          notMatch: 'Пароли должны совпадать',
+        },
+        existingUser: 'Такой пользователь уже существует',
         failed: 'Не удалось зарегистрировать нового пользователя',
       },
     },
     channels: {
       title: 'Каналы',
-      withTag: '# {{channel.name}}',
       activeError: 'Ошибка',
-      add: {
-        hidden: 'Создать канал',
-        modal: {
-          title: 'Добавить канал',
-          label: 'Имя канала',
-          cancel: 'Отменить',
-          submit: 'Отправить',
-          error: {
-            name: {
-              notInRange: 'От 3 до 20 символов',
-              required: 'Обязательное поле',
-              notUniq: 'Должно быть уникальным',
-            },
+      control: 'Управление каналом',
+      add: '+',
+      added: 'Канал создан',
+      remove: 'Удалить',
+      removed: 'Канал удалён',
+      rename: 'Переименовать',
+      renamed: 'Канал переименован',
+      modalAdd: {
+        title: 'Добавить канал',
+        label: 'Имя канала',
+        cancel: 'Отменить',
+        submit: 'Отправить',
+        error: {
+          name: {
+            notInRange: 'От 3 до 20 символов',
+            required: 'Обязательное поле',
+            notUniq: 'Должно быть уникальным',
           },
-        },
-        alert: {
-          success: 'Канал создан',
           failed: 'Не удалось добавить канал',
         },
       },
-      remove: {
-        btn: 'Удалить',
-        modal: {
-          title: 'Удалить канал',
-          body: 'Вы уверены?',
-          cancel: 'Отменить',
-          submit: 'Удалить',
-        },
-        alert: {
-          success: 'Канал удалён',
-          failed: 'Не удалось удалить канал',
-        },
+      modalRemove: {
+        title: 'Удалить канал',
+        body: 'Вы уверены?',
+        cancel: 'Отменить',
+        submit: 'Удалить',
+        failed: 'Не удалось удалить канал',
       },
-      rename: {
-        btn: 'Переименовать',
-        modal: {
-          title: 'Переименовать канал',
-          label: 'Имя канала',
-          cancel: 'Отменить',
-          submit: 'Отправить',
-          error: {
-            name: {
-              notInRange: 'От 3 до 20 символов',
-              required: 'Обязательное поле',
-              notUniq: 'Должно быть уникальным',
-            },
+      modalRename: {
+        title: 'Переименовать канал',
+        label: 'Имя канала',
+        cancel: 'Отменить',
+        submit: 'Отправить',
+        error: {
+          name: {
+            notInRange: 'От 3 до 20 символов',
+            required: 'Обязательное поле',
+            notUniq: 'Должно быть уникальным',
           },
-        },
-        alert: {
-          success: 'Канал переименован',
           failed: 'Не удалось переименовать канал',
         },
       },
@@ -118,19 +93,17 @@ export default {
       count_one: '{{count}} сообщение',
       count_few: '{{count}} сообщения',
       count_many: '{{count}} сообщений',
-      new: {
-        hidden: 'Отправить',
-        label: 'Новое сообщение',
-        placeholder: 'Введите сообщение...',
-      },
+      send: 'Отправить',
+      new: 'Новое сообщение',
+      placeholder: 'Введите сообщение...',
       error: {
         failed: 'Не удалось загрузить сообщения',
       },
     },
-    notFoundPage: {
+    notFound: {
       title: 'Страница не найдена',
       redirectMessage: 'Но вы можете перейти',
-      mainPageLink: 'на главную страницу',
+      toMainPage: 'на главную страницу',
     },
     network: {
       loading: 'Загрузка...',

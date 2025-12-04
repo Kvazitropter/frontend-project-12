@@ -11,6 +11,7 @@ await i18next
     interpolation: {
       escapeValue: false,
     },
+    debug: true,
   });
 
 export default i18nextInstance;

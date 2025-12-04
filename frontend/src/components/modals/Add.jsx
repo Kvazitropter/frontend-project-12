@@ -22,10 +22,10 @@ const Add = ({ handleHide }) => {
 
   const validationSchema = yup.object().shape({
     name: yup.string()
-      .min(3, t('channels.add.modal.error.name.notInRange'))
-      .max(20, t('channels.add.modal.error.name.notInRange'))
-      .notOneOf(channelsNames, t('channels.add.modal.error.name.notUniq'))
-      .required(t('channels.add.modal.error.name.required')),
+      .min(3, t('channels.modalAdd.error.name.notInRange'))
+      .max(20, t('channels.modalAdd.error.name.notInRange'))
+      .notOneOf(channelsNames, t('channels.modalAdd.error.name.notUniq'))
+      .required(t('channels.modalAdd.error.name.required')),
   });
 
   const formik = useFormik({
@@ -37,15 +37,15 @@ const Add = ({ handleHide }) => {
       addChannel({
         name,
       }).unwrap()
-        .then(() => toast.success(t('channels.add.alert.success')))
-        .catch(() => toast.error(t('channels.add.alert.failed')));
+        .then(() => toast.success(t('channels.added')))
+        .catch(() => toast.error(t('channels.modalAdd.error.failed')));
     },
   });
 
   return (
     <Modal show centered onHide={handleHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{t('channels.add.modal.title')}</Modal.Title>
+        <Modal.Title>{t('channels.modalAdd.title')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -59,14 +59,14 @@ const Add = ({ handleHide }) => {
               onChange={formik.handleChange}
               isInvalid={formik.errors.name && formik.touched.name}
             />
-            <Form.Label htmlFor="name" className="visually-hidden">{t('channels.add.modal.label')}</Form.Label>
+            <Form.Label htmlFor="name" className="visually-hidden">{t('channels.modalAdd.label')}</Form.Label>
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button variant="secondary" className="me-2" onClick={handleHide}>
-                {t('channels.add.modal.cancel')}
+                {t('channels.modalAdd.cancel')}
               </Button>
               <Button type="submit" variant="primary" disabled={isAddingChannel}>
-                {t('channels.add.modal.submit')}
+                {t('channels.modalAdd.submit')}
               </Button>
             </div>
           </div>

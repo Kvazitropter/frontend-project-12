@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
 import {
-  Form, Card, Container, Image, Button, Col, Row,
+  Form, FloatingLabel, Card, Container, Image, Button, Col, Row,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -38,7 +38,7 @@ const LoginForm = () => {
         username: values.username,
         password: values.password,
       }).unwrap()
-        .catch(() => toast.error(t('login.alert.failed')));
+        .catch(() => toast.error(t('login.error.failed')));
     },
   });
 
@@ -50,10 +50,10 @@ const LoginForm = () => {
       className="mt-3 mt-md-0"
       onSubmit={formik.handleSubmit}
     >
-      <h1 className="text-center mb-4">{t('login.form.header')}</h1>
-      <Form.FloatingLabel className="mb-3" label={t('login.form.username')} controlId="username">
+      <h1 className="text-center mb-4">{t('login.header')}</h1>
+      <FloatingLabel className="mb-3" label={t('login.username')} controlId="username">
         <Form.Control
-          placeholder={t('login.form.username')}
+          placeholder={t('login.username')}
           name="username"
           autoComplete="username"
           required
@@ -62,10 +62,10 @@ const LoginForm = () => {
           onChange={formik.handleChange}
           ref={usernameInput}
         />
-      </Form.FloatingLabel>
-      <Form.FloatingLabel className="mb-4" label={t('login.form.password')} controlId="password">
+      </FloatingLabel>
+      <FloatingLabel className="mb-4" label={t('login.password')} controlId="password">
         <Form.Control
-          placeholder={t('login.form.password')}
+          placeholder={t('login.password')}
           name="password"
           autoComplete="current-password"
           required
@@ -75,16 +75,16 @@ const LoginForm = () => {
           onChange={formik.handleChange}
         />
         <Form.Control.Feedback type="invalid" tooltip>
-          {loginError?.status === 401 && t('login.form.error.wrongData')}
+          {loginError?.status === 401 && t('login.error.wrongData')}
         </Form.Control.Feedback>
-      </Form.FloatingLabel>
+      </FloatingLabel>
       <Button
         type="submit"
         variant="outline-primary"
         className="w-100 mb-3"
         disabled={isLoginLoading}
       >
-        {t('login.form.submit')}
+        {t('login.submit')}
       </Button>
     </Col>
   );
@@ -100,14 +100,15 @@ const LoginPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
               <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <Image alt={t('login.form.header')} src={loginAvatar} className="rounded-circle" />
+                <Image alt={t('login.header')} src={loginAvatar} className="rounded-circle" />
               </Col>
               <LoginForm />
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>{t('login.footer.message')}</span>
-                <a href="/signup">{t('login.footer.registrationLink')}</a>
+                <span>{t('login.noAcc')}</span>
+                {' '}
+                <a href="/signup">{t('login.registration')}</a>
               </div>
             </Card.Footer>
           </Card>
