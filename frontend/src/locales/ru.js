@@ -9,10 +9,10 @@ export default {
       username: 'Ваш ник',
       password: 'Пароль',
       submit: 'Войти',
-      wrongData: 'Неверные имя пользователя или пароль',
       noAcc: 'Нет аккаунта?',
       registration: 'Регистрация',
       error: {
+        wrongData: 'Неверные имя пользователя или пароль',
         failed: 'Не удалось войти',
       },
     },
