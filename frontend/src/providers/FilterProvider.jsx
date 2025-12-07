@@ -3,7 +3,10 @@ import filter from 'leo-profanity';
 import FilterContext from '../contexts/FilterContext.jsx';
 
 const FilterProvider = ({ children }) => {
-  filter.loadDictionary('ru');
+  filter.list()
+  filter.clearList()
+  filter.add(filter.getDictionary('en'))
+  filter.add(filter.getDictionary('ru'))
 
   const contextValue = useMemo(() => {
     const filterProfanity = (text) => filter.clean(text);
