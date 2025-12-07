@@ -1,28 +1,28 @@
 import {
   ButtonGroup, Col, Form, InputGroup,
-} from 'react-bootstrap';
-import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { useRef, useEffect } from 'react';
-import { toast } from 'react-toastify';
-import { useAddMessageMutation, useGetMessagesQuery } from '../services/api/messagesApi.js';
-import { useGetChannelsQuery } from '../services/api/channelsApi.js';
-import useFilter from '../hooks/useFilter.jsx';
+} from 'react-bootstrap'
+import { useFormik } from 'formik'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { useRef, useEffect } from 'react'
+import { toast } from 'react-toastify'
+import { useAddMessageMutation, useGetMessagesQuery } from '../services/api/messagesApi.js'
+import { useGetChannelsQuery } from '../services/api/channelsApi.js'
+import useFilter from '../hooks/useFilter.jsx'
 
 const MessageForm = () => {
-  const { t } = useTranslation();
-  const inputRef = useRef(null);
+  const { t } = useTranslation()
+  const inputRef = useRef(null)
   const [
     addMessage,
     { isLoading: isAddingMessage },
-  ] = useAddMessageMutation();
-  const { username: currentUsername } = useSelector((state) => state.auth);
-  const { activeChannelId } = useSelector((state) => state.ui);
+  ] = useAddMessageMutation()
+  const { username: currentUsername } = useSelector(state => state.auth)
+  const { activeChannelId } = useSelector(state => state.ui)
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, [activeChannelId]);
+    inputRef.current.focus()
+  }, [activeChannelId])
 
   const formik = useFormik({
     initialValues: {
@@ -33,10 +33,10 @@ const MessageForm = () => {
         body,
         channelId: activeChannelId,
         username: currentUsername,
-      });
-      formik.resetForm();
+      })
+      formik.resetForm()
     },
-  });
+  })
 
   return (
     <Form
@@ -68,12 +68,12 @@ const MessageForm = () => {
         </ButtonGroup>
       </InputGroup>
     </Form>
-  );
-};
+  )
+}
 
 const Message = ({ message }) => {
-  const { filterProfanity } = useFilter();
-  const { id, body, username } = message;
+  const { filterProfanity } = useFilter()
+  const { id, body, username } = message
 
   return (
     <div key={id} className="text-break mb-2">
@@ -81,46 +81,46 @@ const Message = ({ message }) => {
       {': '}
       {filterProfanity(body)}
     </div>
-  );
-};
+  )
+}
 
 const Messages = () => {
-  const { t } = useTranslation();
-  const { filterProfanity } = useFilter();
+  const { t } = useTranslation()
+  const { filterProfanity } = useFilter()
   const {
     data: messages,
     isLoading: isMessagesLoading,
     isSuccess: isMessagesLoaded,
     error: messagesLoadError,
-  } = useGetMessagesQuery();
+  } = useGetMessagesQuery()
   const {
     data: channels,
     isLoading: isChannelsLoading,
-  } = useGetChannelsQuery();
-  const { activeChannelId } = useSelector((state) => state.ui);
-  const activeChannel = channels?.find((channel) => channel.id === activeChannelId);
-  const activeChannelName = (activeChannel && `# ${filterProfanity(activeChannel.name)}`) ?? t('channels.activeError');
-  const shownMessages = messages?.filter(({ channelId }) => channelId === activeChannelId);
-  const messagesCount = (isMessagesLoaded && t('messages.count', { count: shownMessages.length }));
+  } = useGetChannelsQuery()
+  const { activeChannelId } = useSelector(state => state.ui)
+  const activeChannel = channels?.find(channel => channel.id === activeChannelId)
+  const activeChannelName = (activeChannel && `# ${filterProfanity(activeChannel.name)}`) ?? t('channels.activeError')
+  const shownMessages = messages?.filter(({ channelId }) => channelId === activeChannelId)
+  const messagesCount = (isMessagesLoaded && t('messages.count', { count: shownMessages.length }))
 
   const renderMessages = () => {
     if (isMessagesLoading) {
-      return <div>{t('network.loading')}</div>;
+      return <div>{t('network.loading')}</div>
     }
     if (messagesLoadError) {
       switch (messagesLoadError.status) {
         case 401:
-          toast.error(t('network.error.notAuth'));
-          break;
+          toast.error(t('network.error.notAuth'))
+          break
         default:
-          toast.error(t('messages.error.failed'));
-          break;
+          toast.error(t('messages.error.failed'))
+          break
       }
     }
-    if (!isMessagesLoaded) return null;
+    if (!isMessagesLoaded) return null
     return shownMessages
-      .map((message) => <Message key={message.id} message={message} />);
-  };
+      .map(message => <Message key={message.id} message={message} />)
+  }
 
   return (
     <Col className="p-0 h-100">
@@ -141,7 +141,7 @@ const Messages = () => {
         </div>
       </div>
     </Col>
-  );
-};
+  )
+}
 
-export default Messages;
+export default Messages

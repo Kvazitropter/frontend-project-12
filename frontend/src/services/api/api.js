@@ -1,11 +1,11 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import axios from 'axios';
+import { createApi } from '@reduxjs/toolkit/query/react'
+import axios from 'axios'
 
 const axiosBaseQueryWithAuth = ({ baseUrl } = { baseUrl: '' }) => async ({
   url, method, data, params, headers,
 }, { getState }) => {
-  const state = getState();
-  const { token } = state.auth;
+  const state = getState()
+  const { token } = state.auth
 
   try {
     const result = await axios({
@@ -17,22 +17,23 @@ const axiosBaseQueryWithAuth = ({ baseUrl } = { baseUrl: '' }) => async ({
         ...headers,
         ...(token && { Authorization: `Bearer ${token}` }),
       },
-    });
-    return { data: result.data };
-  } catch (axiosError) {
-    const err = axiosError;
+    })
+    return { data: result.data }
+  }
+  catch (axiosError) {
+    const err = axiosError
     return {
       error: {
         status: err.response?.status,
         data: err.response?.data || err.message,
       },
-    };
+    }
   }
-};
+}
 
 const api = createApi({
   baseQuery: axiosBaseQueryWithAuth({ baseUrl: '' }),
   endpoints: () => ({}),
-});
+})
 
-export default api;
+export default api

@@ -11,6 +11,7 @@ build:
 	npm run build
 
 lint:
-	npx eslint --ext js,jsx --no-eslintrc --config .eslintrc.yml .
+	npx eslint .
+
 lint-fix:
-	npx eslint --ext js,jsx --no-eslintrc --config .eslintrc.yml . --fix
+	npx eslint . --fix

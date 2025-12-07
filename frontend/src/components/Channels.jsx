@@ -1,24 +1,24 @@
 import {
   Button, ButtonGroup, Col, Dropdown, Nav,
-} from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useGetChannelsQuery } from '../services/api/channelsApi.js';
-import { setActiveChannel, setModalInfo, clearModalInfo } from '../services/slices/uiSlice.js';
-import getModal from './modals/index.js';
-import useFilter from '../hooks/useFilter.jsx';
+} from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useGetChannelsQuery } from '../services/api/channelsApi.js'
+import { setActiveChannel, setModalInfo, clearModalInfo } from '../services/slices/uiSlice.js'
+import getModal from './modals/index.js'
+import useFilter from '../hooks/useFilter.jsx'
 
 const Channel = ({ channel }) => {
-  const { t } = useTranslation();
-  const { filterProfanity } = useFilter();
-  const dispatch = useDispatch();
-  const { id, name, removable } = channel;
-  const { activeChannelId } = useSelector((state) => state.ui);
-  const variant = id === activeChannelId ? 'secondary' : '';
+  const { t } = useTranslation()
+  const { filterProfanity } = useFilter()
+  const dispatch = useDispatch()
+  const { id, name, removable } = channel
+  const { activeChannelId } = useSelector(state => state.ui)
+  const variant = id === activeChannelId ? 'secondary' : ''
 
-  const openRemoveModal = () => dispatch(setModalInfo({ type: 'removing', channelId: id }));
-  const openRenameModal = () => dispatch(setModalInfo({ type: 'renaming', channelId: id, channelName: name }));
+  const openRemoveModal = () => dispatch(setModalInfo({ type: 'removing', channelId: id }))
+  const openRenameModal = () => dispatch(setModalInfo({ type: 'renaming', channelId: id, channelName: name }))
 
   const navLinkBtn = (
     <Button
@@ -29,7 +29,7 @@ const Channel = ({ channel }) => {
       <span className="me-1">#</span>
       {filterProfanity(name)}
     </Button>
-  );
+  )
 
   if (!removable) {
     return (
@@ -40,7 +40,7 @@ const Channel = ({ channel }) => {
       >
         {navLinkBtn}
       </Nav.Item>
-    );
+    )
   }
 
   return (
@@ -60,15 +60,15 @@ const Channel = ({ channel }) => {
         </Dropdown.Menu>
       </Dropdown>
     </Nav.Item>
-  );
-};
+  )
+}
 
 const renderModal = (modalInfo, handleHide) => {
   if (!modalInfo.type) {
-    return null;
+    return null
   }
 
-  const Component = getModal(modalInfo.type);
+  const Component = getModal(modalInfo.type)
 
   return (
     <Component
@@ -76,41 +76,41 @@ const renderModal = (modalInfo, handleHide) => {
       clickedChannelId={modalInfo.channelId}
       clickedChannelName={modalInfo.channelName}
     />
-  );
-};
+  )
+}
 
 const Channels = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const {
     data: channels,
     isLoading: isChannelsLoading,
     error: channelsLoadError,
     isSuccess: isChannelsLoaded,
-  } = useGetChannelsQuery();
-  const dispatch = useDispatch();
-  const { modalInfo } = useSelector((state) => state.ui);
+  } = useGetChannelsQuery()
+  const dispatch = useDispatch()
+  const { modalInfo } = useSelector(state => state.ui)
 
-  const handleHide = () => dispatch(clearModalInfo());
-  const handleAdd = () => dispatch(setModalInfo({ type: 'adding' }));
+  const handleHide = () => dispatch(clearModalInfo())
+  const handleAdd = () => dispatch(setModalInfo({ type: 'adding' }))
 
   const renderChannelsList = () => {
     if (isChannelsLoading) {
-      return <div>{t('network.loading')}</div>;
+      return <div>{t('network.loading')}</div>
     }
     if (channelsLoadError) {
       switch (channelsLoadError.status) {
         case 401:
-          toast.error(t('network.error.notAuth'));
-          break;
+          toast.error(t('network.error.notAuth'))
+          break
         default:
-          toast.error(t('channels.error.failed'));
-          break;
+          toast.error(t('channels.error.failed'))
+          break
       }
     }
-    if (!isChannelsLoaded) return null;
+    if (!isChannelsLoaded) return null
     return channels
-      .map((channel) => <Channel key={channel.id} channel={channel} />);
-  };
+      .map(channel => <Channel key={channel.id} channel={channel} />)
+  }
 
   return (
     <>
@@ -143,7 +143,7 @@ const Channels = () => {
       </Col>
       {renderModal(modalInfo, handleHide)}
     </>
-  );
-};
+  )
+}
 
-export default Channels;
+export default Channels

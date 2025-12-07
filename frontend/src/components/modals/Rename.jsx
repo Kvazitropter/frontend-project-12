@@ -1,24 +1,24 @@
-import { useFormik } from 'formik';
-import { Modal, Form, Button } from 'react-bootstrap';
-import * as yup from 'yup';
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useGetChannelsQuery, useUpdateChannelMutation } from '../../services/api/channelsApi.js';
+import { useFormik } from 'formik'
+import { Modal, Form, Button } from 'react-bootstrap'
+import * as yup from 'yup'
+import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useGetChannelsQuery, useUpdateChannelMutation } from '../../services/api/channelsApi.js'
 
 const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
-  const { t } = useTranslation();
-  const inputRef = useRef(null);
-  const { data: channels } = useGetChannelsQuery();
-  const channelsNames = channels?.map(({ name }) => name);
+  const { t } = useTranslation()
+  const inputRef = useRef(null)
+  const { data: channels } = useGetChannelsQuery()
+  const channelsNames = channels?.map(({ name }) => name)
   const [
     updateChannel,
     { isLoading: isUpdatingChannel, error: updateChannelError },
-  ] = useUpdateChannelMutation();
+  ] = useUpdateChannelMutation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, [updateChannelError]);
+    inputRef.current.focus()
+  }, [updateChannelError])
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -26,7 +26,7 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
       .max(20, t('channels.modalRename.error.name.notInRange'))
       .notOneOf(channelsNames, t('channels.modalRename.error.name.notUniq'))
       .required(t('channels.modalRename.error.name.required')),
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -41,9 +41,9 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
         },
       }).unwrap()
         .then(() => toast.success(t('channels.renamed')))
-        .catch(() => toast.error(t('channels.modalRename.error.failed')));
+        .catch(() => toast.error(t('channels.modalRename.error.failed')))
     },
-  });
+  })
 
   return (
     <Modal show centered onHide={handleHide}>
@@ -74,7 +74,7 @@ const Rename = ({ handleHide, clickedChannelId, clickedChannelName }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Rename;
+export default Rename

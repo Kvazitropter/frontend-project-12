@@ -1,32 +1,32 @@
-import { useFormik } from 'formik';
-import { useEffect, useRef } from 'react';
+import { useFormik } from 'formik'
+import { useEffect, useRef } from 'react'
 import {
   Form, FloatingLabel, Card, Container, Image, Button, Col, Row,
-} from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import loginAvatar from '../assets/loginAvatar.jpg';
-import { useLoginMutation } from '../services/api/userApi.js';
+} from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import loginAvatar from '../assets/loginAvatar.jpg'
+import { useLoginMutation } from '../services/api/userApi.js'
 
 const LoginForm = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const usernameInput = useRef(null);
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const usernameInput = useRef(null)
   const [
     login,
     { isLoading: isLoginLoading, isSuccess: isLoginSuccess, error: loginError },
-  ] = useLoginMutation();
+  ] = useLoginMutation()
 
   useEffect(() => {
     if (isLoginSuccess) {
-      navigate('/');
+      navigate('/')
     }
-  }, [isLoginSuccess, navigate]);
+  }, [isLoginSuccess, navigate])
 
   useEffect(() => {
-    usernameInput.current.focus();
-  }, [loginError]);
+    usernameInput.current.focus()
+  }, [loginError])
 
   const formik = useFormik({
     initialValues: {
@@ -38,9 +38,9 @@ const LoginForm = () => {
         username: values.username,
         password: values.password,
       }).unwrap()
-        .catch(() => toast.error(t('login.error.failed')));
+        .catch(() => toast.error(t('login.error.failed')))
     },
-  });
+  })
 
   return (
     <Col
@@ -87,11 +87,11 @@ const LoginForm = () => {
         {t('login.submit')}
       </Button>
     </Col>
-  );
-};
+  )
+}
 
 const LoginPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Container fluid className="h-100">
@@ -115,7 +115,7 @@ const LoginPage = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

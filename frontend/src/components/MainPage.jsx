@@ -1,6 +1,6 @@
-import { Container, Row } from 'react-bootstrap';
-import Channels from './Channels.jsx';
-import Messages from './Messages.jsx';
+import { Container, Row } from 'react-bootstrap'
+import Channels from './Channels.jsx'
+import Messages from './Messages.jsx'
 
 const MainPage = () => (
   <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -9,6 +9,6 @@ const MainPage = () => (
       <Messages />
     </Row>
   </Container>
-);
+)
 
-export default MainPage;
+export default MainPage

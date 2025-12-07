@@ -1,20 +1,20 @@
-import { Modal, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useRemoveChannelMutation } from '../../services/api/channelsApi.js';
+import { Modal, Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useRemoveChannelMutation } from '../../services/api/channelsApi.js'
 
 const Remove = ({ handleHide, clickedChannelId }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [
     removeChannel,
     { isLoading: isRemovingChannel, error: removeChannelError },
-  ] = useRemoveChannelMutation();
+  ] = useRemoveChannelMutation()
 
   const handleRemove = () => {
     removeChannel(clickedChannelId).unwrap()
       .then(() => toast.success(t('channels.removed')))
-      .catch(() => toast.error(t('channels.modalRemove.failed')));
-  };
+      .catch(() => toast.error(t('channels.modalRemove.failed')))
+  }
 
   return (
     <Modal show centered onHide={handleHide}>
@@ -39,7 +39,7 @@ const Remove = ({ handleHide, clickedChannelId }) => {
         </div>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Remove;
+export default Remove

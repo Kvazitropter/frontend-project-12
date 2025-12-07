@@ -1,6 +1,6 @@
-import { useContext } from 'react';
-import FilterContext from '../contexts/FilterContext.jsx';
+import { useContext } from 'react'
+import FilterContext from '../contexts/FilterContext.jsx'
 
-const useFilter = () => useContext(FilterContext);
+const useFilter = () => useContext(FilterContext)
 
-export default useFilter;
+export default useFilter

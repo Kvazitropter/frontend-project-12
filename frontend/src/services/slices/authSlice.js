@@ -1,39 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit';
-import api from '../api/api.js';
+import { createSlice } from '@reduxjs/toolkit'
+import api from '../api/api.js'
 
 const getInitialState = () => {
   try {
-    const existingUserData = JSON.parse(localStorage.getItem('user') ?? '{}');
+    const existingUserData = JSON.parse(localStorage.getItem('user') ?? '{}')
     if (existingUserData.token && existingUserData.username) {
       return {
         username: existingUserData.username,
         token: existingUserData.token,
-      };
+      }
     }
-  } catch {
-    console.error('Failed to parse user data from localStorage.');
+  }
+  catch {
+    console.error('Failed to parse user data from localStorage.')
   }
   return {
     username: null,
     token: null,
-  };
-};
+  }
+}
 
 const handleAuthSuccess = (_, { payload }) => {
-  localStorage.setItem('user', JSON.stringify(payload));
+  localStorage.setItem('user', JSON.stringify(payload))
   return {
     username: payload.username,
     token: payload.token,
-  };
-};
+  }
+}
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: getInitialState(),
   reducers: {
     clearUserData: () => {
-      localStorage.removeItem('user');
-      return { username: null, token: null };
+      localStorage.removeItem('user')
+      return { username: null, token: null }
     },
   },
   extraReducers: (builder) => {
@@ -45,9 +46,9 @@ const authSlice = createSlice({
       .addMatcher(
         api.endpoints.signup.matchFulfilled,
         handleAuthSuccess,
-      );
+      )
   },
-});
+})
 
-export const { clearUserData } = authSlice.actions;
-export default authSlice.reducer;
+export const { clearUserData } = authSlice.actions
+export default authSlice.reducer

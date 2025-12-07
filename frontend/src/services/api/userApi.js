@@ -1,17 +1,17 @@
-import api from './api.js';
-import routes from '../../routes.js';
+import api from './api.js'
+import routes from '../../routes.js'
 
 const userApi = api.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     login: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: routes.loginPath(),
         method: 'POST',
         data,
       }),
     }),
     signup: builder.mutation({
-      query: (data) => ({
+      query: data => ({
         url: routes.signupPath(),
         method: 'POST',
         data,
@@ -19,6 +19,6 @@ const userApi = api.injectEndpoints({
     }),
   }),
   overrideExisting: true,
-});
+})
 
-export const { useLoginMutation, useSignupMutation } = userApi;
+export const { useLoginMutation, useSignupMutation } = userApi

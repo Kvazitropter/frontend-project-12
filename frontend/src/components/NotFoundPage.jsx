@@ -1,9 +1,9 @@
-import { Card, Image } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import notFoundImg from '../assets/404pageNotFound.svg';
+import { Card, Image } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import notFoundImg from '../assets/404pageNotFound.svg'
 
 const NotFoundPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Card bsPrefix="text-center">
@@ -15,7 +15,7 @@ const NotFoundPage = () => {
         <Card.Link href="/">{t('notFound.toMainPage')}</Card.Link>
       </Card.Text>
     </Card>
-  );
-};
+  )
+}
 
-export default NotFoundPage;
+export default NotFoundPage

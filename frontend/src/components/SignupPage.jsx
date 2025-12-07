@@ -1,33 +1,33 @@
-import { useFormik } from 'formik';
-import { useEffect, useRef } from 'react';
+import { useFormik } from 'formik'
+import { useEffect, useRef } from 'react'
 import {
   Form, FloatingLabel, Card, Container, Image, Button, Col, Row,
-} from 'react-bootstrap';
-import * as yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import signupAvatar from '../assets/signupAvatar.jpg';
-import { useSignupMutation } from '../services/api/userApi.js';
+} from 'react-bootstrap'
+import * as yup from 'yup'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import signupAvatar from '../assets/signupAvatar.jpg'
+import { useSignupMutation } from '../services/api/userApi.js'
 
 const SignupForm = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const usernameInput = useRef(null);
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const usernameInput = useRef(null)
   const [
     signup,
     { isLoading: isAuthLoading, isSuccess: isAuthSuccess, error: authError },
-  ] = useSignupMutation();
+  ] = useSignupMutation()
 
   useEffect(() => {
     if (isAuthSuccess) {
-      navigate('/');
+      navigate('/')
     }
-  }, [isAuthSuccess, navigate]);
+  }, [isAuthSuccess, navigate])
 
   useEffect(() => {
-    usernameInput.current.focus();
-  }, [authError]);
+    usernameInput.current.focus()
+  }, [authError])
 
   const validationSchema = yup.object().shape({
     username: yup.string()
@@ -40,7 +40,7 @@ const SignupForm = () => {
     confirmPassword: yup.string()
       .oneOf([yup.ref('password'), null], t('signup.error.confirmPassword.notMatch'))
       .required(t('signup.error.required')),
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -54,9 +54,9 @@ const SignupForm = () => {
         username: values.username,
         password: values.password,
       }).unwrap()
-        .catch(() => toast.error(t('signup.error.failed')));
+        .catch(() => toast.error(t('signup.error.failed')))
     },
-  });
+  })
 
   return (
     <Form
@@ -124,11 +124,11 @@ const SignupForm = () => {
         {t('signup.submit')}
       </Button>
     </Form>
-  );
-};
+  )
+}
 
 const SignupPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Container fluid className="h-100">
@@ -145,7 +145,7 @@ const SignupPage = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default SignupPage;
+export default SignupPage

@@ -1,18 +1,18 @@
-import api from './api.js';
-import routes from '../../routes.js';
+import api from './api.js'
+import routes from '../../routes.js'
 
 const channelsApi = api.injectEndpoints({
   tagTypes: ['Channel'],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getChannels: builder.query({
       query: () => ({
         url: routes.channelsPath(),
         method: 'GET',
       }),
-      providesTags: (result) => result?.map(({ id }) => ({ type: 'Channel', id })),
+      providesTags: result => result?.map(({ id }) => ({ type: 'Channel', id })),
     }),
     addChannel: builder.mutation({
-      query: (channel) => ({
+      query: channel => ({
         url: routes.channelsPath(),
         method: 'POST',
         data: channel,
@@ -28,7 +28,7 @@ const channelsApi = api.injectEndpoints({
       invalidatesTags: (_result, _error, { id }) => [{ type: 'Channel', id }],
     }),
     removeChannel: builder.mutation({
-      query: (id) => ({
+      query: id => ({
         url: routes.channelPath(id),
         method: 'DELETE',
       }),
@@ -36,11 +36,11 @@ const channelsApi = api.injectEndpoints({
     }),
   }),
   overrideExisting: true,
-});
+})
 
 export const {
   useGetChannelsQuery,
   useAddChannelMutation,
   useUpdateChannelMutation,
   useRemoveChannelMutation,
-} = channelsApi;
+} = channelsApi

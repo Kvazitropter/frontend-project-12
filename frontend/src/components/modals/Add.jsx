@@ -1,24 +1,24 @@
-import { useFormik } from 'formik';
-import { Modal, Form, Button } from 'react-bootstrap';
-import * as yup from 'yup';
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useGetChannelsQuery, useAddChannelMutation } from '../../services/api/channelsApi.js';
+import { useFormik } from 'formik'
+import { Modal, Form, Button } from 'react-bootstrap'
+import * as yup from 'yup'
+import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useGetChannelsQuery, useAddChannelMutation } from '../../services/api/channelsApi.js'
 
 const Add = ({ handleHide }) => {
-  const { t } = useTranslation();
-  const inputRef = useRef(null);
-  const { data: channels } = useGetChannelsQuery();
-  const channelsNames = channels?.map(({ name }) => name);
+  const { t } = useTranslation()
+  const inputRef = useRef(null)
+  const { data: channels } = useGetChannelsQuery()
+  const channelsNames = channels?.map(({ name }) => name)
   const [
     addChannel,
     { isLoading: isAddingChannel, error: addChannelError },
-  ] = useAddChannelMutation();
+  ] = useAddChannelMutation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, [addChannelError]);
+    inputRef.current.focus()
+  }, [addChannelError])
 
   const validationSchema = yup.object().shape({
     name: yup.string()
@@ -26,7 +26,7 @@ const Add = ({ handleHide }) => {
       .max(20, t('channels.modalAdd.error.name.notInRange'))
       .notOneOf(channelsNames, t('channels.modalAdd.error.name.notUniq'))
       .required(t('channels.modalAdd.error.name.required')),
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -38,9 +38,9 @@ const Add = ({ handleHide }) => {
         name,
       }).unwrap()
         .then(() => toast.success(t('channels.added')))
-        .catch(() => toast.error(t('channels.modalAdd.error.failed')));
+        .catch(() => toast.error(t('channels.modalAdd.error.failed')))
     },
-  });
+  })
 
   return (
     <Modal show centered onHide={handleHide}>
@@ -73,7 +73,7 @@ const Add = ({ handleHide }) => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Add;
+export default Add

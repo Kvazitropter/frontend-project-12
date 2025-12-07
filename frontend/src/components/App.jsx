@@ -4,23 +4,23 @@ import {
   Route,
   useLocation,
   Navigate,
-} from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import Navigation from './Navigation.jsx';
-import MainPage from './MainPage.jsx';
-import LoginPage from './LoginPage.jsx';
-import SignupPage from './SignupPage.jsx';
-import NotFoundPage from './NotFoundPage.jsx';
-import useAuth from '../hooks/useAuth.jsx';
+} from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import Navigation from './Navigation.jsx'
+import MainPage from './MainPage.jsx'
+import LoginPage from './LoginPage.jsx'
+import SignupPage from './SignupPage.jsx'
+import NotFoundPage from './NotFoundPage.jsx'
+import useAuth from '../hooks/useAuth.jsx'
 
 const PrivateRoute = ({ children }) => {
-  const { isLoggedIn } = useAuth();
-  const location = useLocation();
+  const { isLoggedIn } = useAuth()
+  const location = useLocation()
 
   return (
     isLoggedIn ? children : <Navigate to="/login" state={{ from: location }} />
-  );
-};
+  )
+}
 
 const App = () => (
   <>
@@ -44,6 +44,6 @@ const App = () => (
     </div>
     <ToastContainer />
   </>
-);
+)
 
-export default App;
+export default App

@@ -1,8 +1,8 @@
-import i18next from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import ru from './locales/ru.js';
+import i18next from 'i18next'
+import { initReactI18next } from 'react-i18next'
+import ru from './locales/ru.js'
 
-const i18nextInstance = i18next.createInstance();
+const i18nextInstance = i18next.createInstance()
 await i18next
   .use(initReactI18next)
   .init({
@@ -11,6 +11,6 @@ await i18next
     interpolation: {
       escapeValue: false,
     },
-  });
+  })
 
-export default i18nextInstance;
+export default i18nextInstance
