@@ -51,9 +51,10 @@ const Channel = ({ channel }) => {
     >
       <Dropdown as={ButtonGroup} className="d-flex">
         {navLinkBtn}
-        <Dropdown.Toggle variant={variant} split id="dropdown-split-basic" />
-        <Dropdown.Menu>
+        <Dropdown.Toggle variant={variant} split id="dropdown-split-basic">
           <span className="visually-hidden">{t('channels.control')}</span>
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
           <Dropdown.Item onClick={openRemoveModal}>{t('channels.remove')}</Dropdown.Item>
           <Dropdown.Item onClick={openRenameModal}>{t('channels.rename')}</Dropdown.Item>
         </Dropdown.Menu>
